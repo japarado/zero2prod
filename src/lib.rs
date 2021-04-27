@@ -1,12 +1,13 @@
 use std::collections::HashMap;
-use std::net::TcpListener;
 
-use actix_web::{App, dev::Server, get, HttpResponse, HttpServer, Responder, web};
+use actix_web::{HttpResponse, Responder};
 
 pub mod configuration;
+pub mod domain;
 pub mod routes;
 pub mod startup;
 pub mod utils;
+pub mod telemetry;
 
 
 async fn index() -> impl Responder {

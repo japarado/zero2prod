@@ -1,12 +1,12 @@
 use std::net::TcpListener;
-use std::sync::Arc;
 
 use actix_web::{App, HttpServer, web};
 use actix_web::dev::Server;
-use sqlx::{PgConnection, PgPool};
+use sqlx::PgPool;
 
 use crate::index;
 use crate::routes::{health_check, subscribe};
+use tracing_actix_web::TracingLogger;
 
 pub fn run(
     listener: TcpListener,
@@ -15,6 +15,7 @@ pub fn run(
     let db_pool = web::Data::new(db_pool);
     let server = HttpServer::new(move || {
         App::new()
+            .wrap(TracingLogger)
             .route("/health_check", web::get().to(health_check))
             .route("/", web::get().to(index))
             .route("/subscriptions", web::post().to(subscribe))
